@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradeTrack</title>
+    <!-- Link to our external CSS file in the static folder -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- ── HEADER ─────────────────────────────────────────── -->
+        <div class="header">
+            <h1>GradeTrack</h1>
+            <p>Track your courses and CGPA at Concordia</p>
+        </div>
+
+        <!-- ── CGPA DISPLAY ───────────────────────────────────── -->
+        <!-- Shows current CGPA if courses with grades exist -->
+        <!-- Otherwise shows a prompt to get started -->
+        <div class="cgpa-card">
+            {% if cgpa %}
+            <h2>Current CGPA</h2>
+            <!-- cgpa is calculated in app.py and passed to this template -->
+            <div class="cgpa-number">{{ cgpa }} <span>/ 4.3</span></div>
+            {% else %}
+            <h2>No grades yet</h2>
+            <p>Add a course below to get started</p>
+            {% endif %}
+        </div>
+
+        <!-- ── TARGET CGPA CALCULATOR ─────────────────────────── -->
+        <!-- User enters a target CGPA and remaining credits -->
+        <!-- Flask calculates the required average grade and returns it -->
+        <div class="card">
+            <h3>What grade do I need?</h3>
+            <form action="/target" method="POST" class="inline-form">
+                <input type="number" name="target" placeholder="Target CGPA (e.g. 3.0)" step="0.01" min="0" max="4.3"
+                    required>
+                <input type="number" name="upcoming" placeholder="Remaining credits" required>
+                <button type="submit">Calculate</button>
+            </form>
+
+            <!-- Show result only if Flask returned a "needed" value -->
+            {% if needed is defined %}
+            {% if needed > 4.3 %}
+            <!-- Target is not achievable this semester -->
+            <p class="warning">You would need {{ needed }}/4.3 — not achievable this semester alone. Keep going!</p>
+            {% elif needed < 0 %} <!-- Already above target -->
+                <p class="success">You have already hit your target CGPA!</p>
+                {% else %}
+                <!-- Achievable — show the required average -->
+                <p class="success">You need <strong>{{ needed }}/4.3</strong> average in your remaining credits to reach
+                    {{ target }}.</p>
+                {% endif %}
+                {% endif %}
+        </div>
+
+        <!-- ── ADD COURSE FORM ─────────────────────────────────── -->
+        <!-- Submits to the /add route in app.py via POST -->
+        <div class="card">
+            <h3>Add a Course</h3>
+            <form action="/add" method="POST" class="add-form">
+
+                <!-- Course name -->
+                <input type="text" name="name" placeholder="Course name (e.g. COMP 232)" required>
+
+                <!-- Number of credits for this course -->
+                <input type="number" name="credits" placeholder="Credits" min="0.5" required>
+
+                <!-- Letter grade dropdown -->
+                <!-- grade_options is passed from app.py as a list of letter grades -->
+                <!-- The selected letter is converted to GPA in app.py before saving -->
+                <select name="grade">
+                    <option value="">No grade yet</option>
+                    {% for g in grade_options %}
+                    <option value="{{ g }}">{{ g }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Semester label for organization -->
+                <input type="text" name="semester" placeholder="Semester (e.g. Winter 2025)">
+
+                <button type="submit">Add Course</button>
+            </form>
+        </div>
+
+        <!-- ── COURSE TABLE ────────────────────────────────────── -->
+        <!-- Lists all courses stored in courses.csv -->
+        <!-- Each row has a delete link that calls the /delete/<id> route -->
+        <div class="card">
+            <h3>My Courses</h3>
+            {% if courses %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Credits</th>
+                        <th>Grade (GPA)</th>
+                        <th>Semester</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through each course passed from app.py -->
+                    {% for c in courses %}
+                    <tr>
+                        <td>{{ c.name }}</td>
+                        <td>{{ c.credits }}</td>
+                        <!-- Show GPA value or a dash if not graded yet -->
+                        <td>{{ c.grade if c.grade else "—" }}</td>
+                        <!-- Show semester or a dash if not entered -->
+                        <td>{{ c.semester if c.semester else "—" }}</td>
+                        <!-- Delete button — asks for confirmation before deleting -->
+                        <td>
+                            <a href="/delete/{{ c.id }}" class="delete-btn"
+                                onclick="return confirm('Delete this course?')">
+                                x
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <!-- Shown when no courses have been added yet -->
+            <p class="empty">No courses added yet.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</body>
+
+</html>

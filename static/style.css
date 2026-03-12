@@ -1,0 +1,247 @@
+/* ── RESET ────────────────────────────────────────────────────
+   Remove default browser margins, padding, and box model quirks
+   so everything renders consistently across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── BASE ─────────────────────────────────────────────────────
+   Set the overall page font, background color, and padding */
+body {
+    font-family: 'Georgia', serif;
+    background: #f4f6f9;
+    color: #1a1a1a;
+    padding: 2rem;
+}
+
+/* ── LAYOUT ───────────────────────────────────────────────────
+   Center the content and stack sections vertically with spacing */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ── HEADER ───────────────────────────────────────────────────
+   Dark navy banner at the top with the app name and subtitle */
+.header {
+    text-align: center;
+    padding: 2rem;
+    background: #1b3a5c;
+    border-radius: 12px;
+    color: white;
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.4rem;
+}
+
+.header p {
+    font-size: 0.95rem;
+    opacity: 0.75;
+    font-style: italic;
+}
+
+/* ── CGPA CARD ────────────────────────────────────────────────
+   Blue card that prominently displays the current CGPA */
+.cgpa-card {
+    background: #2e86ab;
+    color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.cgpa-card h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.85;
+    margin-bottom: 0.5rem;
+}
+
+/* Large number for the CGPA value */
+.cgpa-number {
+    font-size: 3.5rem;
+    font-weight: bold;
+}
+
+/* Smaller "/4.3" next to the CGPA number */
+.cgpa-number span {
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
+
+/* ── CARDS ────────────────────────────────────────────────────
+   White rounded boxes used for each section */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.8rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Section title inside each card */
+.card h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #1b3a5c;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* ── FORMS ────────────────────────────────────────────────────
+   Flex layout so form fields wrap naturally on smaller screens */
+.add-form,
+.inline-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+/* ── TEXT INPUTS ──────────────────────────────────────────────
+   Consistent styling for all text and number input fields */
+input {
+    flex: 1;
+    min-width: 160px;
+    padding: 0.65rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Georgia', serif;
+    color: #1a1a1a;
+    background: #fafafa;
+    outline: none;
+    transition: border 0.2s;
+}
+
+/* Highlight input border on focus */
+input:focus {
+    border-color: #2e86ab;
+    background: white;
+}
+
+/* ── DROPDOWN ─────────────────────────────────────────────────
+   Grade selector styled to match text inputs */
+select {
+    flex: 1;
+    min-width: 160px;
+    padding: 0.65rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Georgia', serif;
+    color: #1a1a1a;
+    background: #fafafa;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Highlight dropdown border on focus */
+select:focus {
+    border-color: #2e86ab;
+    background: white;
+}
+
+/* ── BUTTON ───────────────────────────────────────────────────
+   Dark navy submit button with hover transition to accent blue */
+button {
+    padding: 0.65rem 1.4rem;
+    background: #1b3a5c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #2e86ab;
+}
+
+/* ── TABLE ────────────────────────────────────────────────────
+   Clean table layout for displaying course list */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+/* Light grey background for the header row */
+thead tr {
+    background: #f4f6f9;
+}
+
+/* Column header labels — small, uppercase, grey */
+th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+}
+
+/* Data cells with a subtle bottom border between rows */
+td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    color: #1a1a1a;
+}
+
+/* Remove border from the last row */
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Subtle hover highlight on table rows */
+tr:hover td {
+    background: #f9fbfc;
+}
+
+/* ── DELETE BUTTON ────────────────────────────────────────────
+   Red "x" link in each table row to remove a course */
+.delete-btn {
+    color: #cc0000;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.delete-btn:hover {
+    color: #ff0000;
+}
+
+/* ── MESSAGES ─────────────────────────────────────────────────
+   Shown below the target calculator after a result is returned */
+
+/* Green text for positive results */
+.success {
+    margin-top: 1rem;
+    color: #1e8449;
+    font-size: 0.95rem;
+}
+
+/* Orange text for warning results (target not achievable) */
+.warning {
+    margin-top: 1rem;
+    color: #b7770d;
+    font-size: 0.95rem;
+}
+
+/* Grey italic text shown when the course list is empty */
+.empty {
+    color: #999;
+    font-style: italic;
+    font-size: 0.9rem;
+}
